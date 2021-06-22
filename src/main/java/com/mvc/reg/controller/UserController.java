@@ -29,17 +29,5 @@ public class UserController {
 	public String helloAdmin() {
 		return "Hello Admin !";
 	}
-	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody UserDto user)throws Exception{
-		try {
-			
-		return ResponseEntity.ok(customUserDetailsService.save(user)) ;
-				 
-		}catch(Exception e) {
-	       
-	        return ResponseEntity
-	            .status(HttpStatus.ALREADY_REPORTED)
-	            .body("Error Message");
-	    }
-	}
+	
 }

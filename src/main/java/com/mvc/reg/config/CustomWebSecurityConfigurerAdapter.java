@@ -3,6 +3,7 @@ package com.mvc.reg.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,9 +47,13 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
-		.authorizeRequests().antMatchers("/user/helloadmin").hasRole("ADMIN")
-		.antMatchers("/user/hellouser").hasAnyRole("ADMIN","USER")
-		.antMatchers("/authenticate","/user/register").permitAll().anyRequest().authenticated()
+		.authorizeRequests()
+		.antMatchers("/authenticate","/register").permitAll()
+		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+		.antMatchers("/admin/**").hasRole("ADMIN")
+		.antMatchers("/api/v1/**").hasAnyRole("ADMIN","USER")
+		
+		.anyRequest().authenticated()
 		
 		//if any exception occurs call this
 				.and().exceptionHandling()
